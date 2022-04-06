@@ -2,61 +2,38 @@
 // productType, 0 = new product, 1 = old product
 // price, the price of the product
 
-let price = 100;
-const companyUserRebate = 5;
-const newProductPriceAddition = 25;
-const oldProductPriceAddition = 35;
-const productPublishedTodayRebate = 10;
-// const userType = 0;
 const isPublishedToday = publishedDate => {
-  return publishedDate.toDateString() == new Date().toDateString();
+  if (publishedDate.toDateString() == new Date().toDateString()) {
+    return 10;
+  }
 };
 
-const checkUserType = (userType, price, companyUserRebate) => {
-  console.log('banana');
+const checkUserTypeDiscount = userType => {
   if (userType === 1) {
-    return price - companyUserRebate;
+    return 5;
   } else {
-    return price;
+    return 0;
   }
 };
 
-const checkProductPrice = (
-  productType,
-  price,
-  newProductPriceAddition,
-  oldProductPriceAddition,
-  isPublishedToday,
-  productPublishedTodayRebate
-) => {
-  if (productType === 0 && isPublishedToday) {
-    return price + newProductPriceAddition - productPublishedTodayRebate;
+const productTypePriceAddition = productType => {
+  if (productType === 0) {
+    return 25;
+  } else if (productType === 1) {
+    return 35;
   } else {
-    return price + oldProductPriceAddition;
-  }
-};
-
-const productPublishedToday = (isPublishedToday, price) => {
-  if (isPublishedToday) {
-    return price - isPublishedToday;
+    throw Error({ message: `Unrecognized product type:  + ${productType}` });
   }
 };
 
 const calculatePrice = (userType, productType, price, publishedDate) => {
-  checkUserType();
-  // let calculatedPrice = price;
+  const userTypeSum = checkUserTypeDiscount(userType);
+  const productTypeSum = productTypePriceAddition(productType);
+  const publishedTodaySum = isPublishedToday(publishedDate);
 
-  // calculatedPrice = checkUserType();
-
-  // console.log('calculated price', calculatedPrice);
-
-  // calculatedPrice = checkProductPrice(calculatedPrice);
-
-  // calculatedPrice = productPublishedToday(calculatedPrice);
-
-  // return calculatedPrice;
+  const finalPrice = price + productTypeSum - userTypeSum - publishedTodaySum;
+  return finalPrice;
 };
-calculatePrice();
 
 // var calculatePrice = function (userType, productType, price, publishedDate) {
 //   try {
