@@ -11,3 +11,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+h1 {
+  font-family: 'Rubik Bubbles', cursive;
+  letter-spacing: 2px;
+  text-align: center;
+  font-size: 3em;
+}
+
+.form-container {
+  border: 2px solid black;
+  width: 70%;
+  margin: 10px auto;
+}
+
+.form-container form,
+p {
+  display: flex;
+  flex-direction: column;
+}
