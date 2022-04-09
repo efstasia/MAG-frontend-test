@@ -1,10 +1,12 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Roboto Mono', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #e6c84f;
+  background-image: linear-gradient(315deg, #e6c84f 0%, #e8807f 74%);
+  box-sizing: border-box;
+  height: 100vh;
 }
 
 code {
@@ -12,21 +14,81 @@ code {
     monospace;
 }
 
+.wrapper > .mag-logo {
+  display: block;
+  margin: auto;
+}
+
 h1 {
-  font-family: 'Rubik Bubbles', cursive;
+  font-family: 'Alfa Slab One', cursive;
   letter-spacing: 2px;
   text-align: center;
-  font-size: 3em;
+  font-size: 2em;
 }
 
 .form-container {
-  border: 2px solid black;
-  width: 70%;
-  margin: 10px auto;
+  width: 30%;
+  margin: 30px auto;
+  box-shadow: 2px 2px 4px black;
+  border: 1px solid #161616;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .form-container form,
 p {
+  padding: 10px 15px;
   display: flex;
   flex-direction: column;
+  width: fit-content;
+  margin: auto;
+}
+
+input,
+select,
+label {
+  font-family: 'Roboto Mono', monospace;
+  padding: 4px;
+  display: block;
+}
+
+input[type='radio'] {
+  display: inline;
+}
+
+.button-wrapper {
+  width: 100%;
+  display: flex;
+  margin: auto;
+}
+
+.button-wrapper > button {
+  margin: 0 5px;
+  font-size: 18px;
+}
+
+.button-wrapper > button:hover {
+  cursor: pointer;
+}
+
+.sum-container {
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.sum-container > span {
+  display: block;
+}
+
+.new-product-chosen {
+  animation: fadeInAnimation 1s ease-in;
+}
+
+@keyframes fadeInAnimation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

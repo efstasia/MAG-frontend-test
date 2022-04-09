@@ -6,8 +6,6 @@ const App = () => {
   const [product, setProduct] = useState<string | undefined>('');
   const [user, setUser] = useState<string | undefined>('');
   const [total, setTotal] = useState<number | undefined>(0);
-  const [radioInput, setRadioInput] = useState<boolean | undefined>(false);
-  const [clear, setClear] = useState<boolean | undefined>(false);
   const [productPostedToday, setProductPostedToday] = useState<
     string | undefined
   >('no');
@@ -17,12 +15,9 @@ const App = () => {
   const oldProductAddition: number = 35;
   const companyUserRebate: number = 5;
   const postedToday: number = 10;
-  const today = new Date();
 
   const clearCalculator = () => {
     setTotal(0);
-    // setUser(undefined);
-    // setProduct(undefined);
   };
 
   const countSum = () => {
@@ -38,9 +33,23 @@ const App = () => {
     } else if (user === 'normal' && product === 'new') {
       console.log('NORMAL USER NEW PRODUCT ');
       setTotal(initialPrice + newProductAddition);
-    } else if (product === 'new' && today) {
+    }
+
+    if (
+      user === 'normal' &&
+      product === 'new' &&
+      productPostedToday === 'yes'
+    ) {
       console.log('NEW PRODUCT POSTED TODAY');
       setTotal(initialPrice + newProductAddition - postedToday);
+    } else if (
+      user === 'company' &&
+      product === 'new' &&
+      productPostedToday === 'yes'
+    ) {
+      setTotal(
+        initialPrice + newProductAddition - postedToday - companyUserRebate
+      );
     }
   };
 
@@ -48,6 +57,7 @@ const App = () => {
   console.log('product:', product);
   console.log('posted today:', productPostedToday);
   console.log('total:', total);
+  console.log('posted today:', postedToday);
 
   return (
     <div className='wrapper'>
@@ -72,7 +82,7 @@ const App = () => {
               company user
             </option>
           </select>
-          <label>choose product type</label>
+          <label>Choose product type</label>
           <select
             defaultValue={'default'}
             onChange={e => setProduct(e.target.value)}
@@ -83,33 +93,65 @@ const App = () => {
             <option value='new'>new product</option>
             <option value='old'>old product</option>
           </select>
-          <label>is it published today?</label>
-          <input
-            // disabled={isOldProduct}
-            value='yes'
-            type='radio'
-            name='isPublishedToday'
-            onChange={e => setProductPostedToday(e.target.value)}
-          />
-          yes
-          <input
-            value='no'
-            type='radio'
-            name='isPublishedToday'
-            onChange={e => setProductPostedToday(e.target.value)}
-          />
-          no
-          <button type='submit' onClick={countSum}>
-            calculate sum
-          </button>
-          <button type='submit' onClick={clearCalculator}>
-            clear
-          </button>
+          {product === 'new' && (
+            <div className='new-product-chosen'>
+              <label>is it published today?</label>
+              <label htmlFor='yes'>
+                <input
+                  // disabled={isOldProduct}
+                  value='yes'
+                  type='radio'
+                  name='isPublishedToday'
+                  onChange={e => setProductPostedToday(e.target.value)}
+                  id='yes'
+                />
+                yes
+              </label>
+              <label htmlFor='no'>
+                <input
+                  value='no'
+                  type='radio'
+                  name='isPublishedToday'
+                  onChange={e => setProductPostedToday(e.target.value)}
+                  id='no'
+                />
+                no
+              </label>
+            </div>
+          )}
+
+          <div className='button-wrapper'>
+            <button className='sum-button' type='submit' onClick={countSum}>
+              calculate sum
+            </button>
+            <button
+              className='clear-button'
+              type='submit'
+              onClick={clearCalculator}
+            >
+              clear
+            </button>
+          </div>
         </form>
-        <p>
-          result is:
-          {total}
-        </p>
+        <div className='sum-container'>
+          <span> price: {initialPrice}</span>
+          <span>
+            price addition:&nbsp;
+            {product === 'new' ? newProductAddition : oldProductAddition}
+          </span>
+          <span>
+            {user === 'company'
+              ? ' company user rebate:'
+              : 'no rebate available'}
+            {user === 'company' ? companyUserRebate : ''}
+          </span>
+          <span>
+            {productPostedToday === 'yes'
+              ? 'you get 10SEK off'
+              : 'no rebate available'}
+          </span>
+          <span>total sum is: {total}</span>
+        </div>
       </div>
     </div>
   );
