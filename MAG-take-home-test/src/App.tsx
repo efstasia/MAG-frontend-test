@@ -14,50 +14,47 @@ const App = () => {
   const newProductAddition: number = 25;
   const oldProductAddition: number = 35;
   const companyUserRebate: number = 5;
-  const postedToday: number = 10;
+  const postedTodayRebate: number = 10;
 
   const clearCalculator = () => {
     setTotal(0);
   };
 
   const countSum = () => {
-    if (user === 'company' && product === 'new') {
-      console.log('COMPANY NEW PRODUCT');
-      setTotal(initialPrice + newProductAddition - companyUserRebate);
-    } else if (user === 'company' && product === 'old') {
-      console.log('COMPANY OLD PRODUCT');
-      setTotal(initialPrice + oldProductAddition - companyUserRebate);
-    } else if (user === 'normal' && product === 'old') {
-      console.log('NORMAL USER OLD PRODUCT');
-      setTotal(initialPrice + oldProductAddition);
-    } else if (user === 'normal' && product === 'new') {
-      console.log('NORMAL USER NEW PRODUCT ');
-      setTotal(initialPrice + newProductAddition);
-    }
+    try {
+      if (user === 'company' && product === 'new') {
+        setTotal(initialPrice + newProductAddition - companyUserRebate);
+      } else if (user === 'company' && product === 'old') {
+        setTotal(initialPrice + oldProductAddition - companyUserRebate);
+      } else if (user === 'normal' && product === 'new') {
+        setTotal(initialPrice + newProductAddition);
+      } else {
+        setTotal(initialPrice + oldProductAddition);
+      }
 
-    if (
-      user === 'normal' &&
-      product === 'new' &&
-      productPostedToday === 'yes'
-    ) {
-      console.log('NEW PRODUCT POSTED TODAY');
-      setTotal(initialPrice + newProductAddition - postedToday);
-    } else if (
-      user === 'company' &&
-      product === 'new' &&
-      productPostedToday === 'yes'
-    ) {
-      setTotal(
-        initialPrice + newProductAddition - postedToday - companyUserRebate
-      );
+      if (
+        user === 'normal' &&
+        product === 'new' &&
+        productPostedToday === 'yes'
+      ) {
+        setTotal(initialPrice + newProductAddition - postedTodayRebate);
+      } else if (
+        user === 'company' &&
+        product === 'new' &&
+        productPostedToday === 'yes'
+      ) {
+        setTotal(
+          initialPrice +
+            newProductAddition -
+            postedTodayRebate -
+            companyUserRebate
+        );
+      }
+    } catch (err: any) {
+      let message: string = 'no product or user type found';
+      if (err) message = err.message;
     }
   };
-
-  console.log('user:', user);
-  console.log('product:', product);
-  console.log('posted today:', productPostedToday);
-  console.log('total:', total);
-  console.log('posted today:', postedToday);
 
   return (
     <div className='wrapper'>
@@ -95,10 +92,9 @@ const App = () => {
           </select>
           {product === 'new' && (
             <div className='new-product-chosen'>
-              <label>is it published today?</label>
+              <label>Was it published today?</label>
               <label htmlFor='yes'>
                 <input
-                  // disabled={isOldProduct}
                   value='yes'
                   type='radio'
                   name='isPublishedToday'
@@ -129,28 +125,28 @@ const App = () => {
               type='submit'
               onClick={clearCalculator}
             >
-              clear
+              clear total
             </button>
           </div>
         </form>
         <div className='sum-container'>
-          <span> price: {initialPrice}</span>
+          <span> price: {initialPrice}SEK</span>
           <span>
             price addition:&nbsp;
-            {product === 'new' ? newProductAddition : oldProductAddition}
+            {product === 'new' ? newProductAddition : oldProductAddition}SEK
           </span>
           <span>
             {user === 'company'
-              ? ' company user rebate:'
-              : 'no rebate available'}
+              ? ' company user rebate: '
+              : 'no company rebate available'}
             {user === 'company' ? companyUserRebate : ''}
           </span>
           <span>
-            {productPostedToday === 'yes'
+            {product === 'new' && productPostedToday === 'yes'
               ? 'you get 10SEK off'
               : 'no rebate available'}
           </span>
-          <span>total sum is: {total}</span>
+          <span>total: {total}SEK</span>
         </div>
       </div>
     </div>

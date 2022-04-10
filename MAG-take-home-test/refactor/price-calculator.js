@@ -22,7 +22,9 @@ const productTypePriceAddition = productType => {
   } else if (productType === 1) {
     return 35;
   } else {
-    throw Error({ message: `Unrecognized product type:  + ${productType}` });
+    throw new Error({
+      message: `Unrecognized product type:  + ${productType}`,
+    });
   }
 };
 
